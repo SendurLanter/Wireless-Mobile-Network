@@ -19,7 +19,7 @@ dist=list()
 for d in range(1,1000):
 	g=((ht*hr)**2)/(d**4)
 	P=g*Pt*Gt*Gr
-	Pr.append(10*math.log(P))
+	Pr.append(P)
 	dist.append(d)
 
 plt.subplot(2,2,1)
@@ -32,7 +32,7 @@ for d in range(1,1000):
 	g=((ht*hr)**2)/(d**4)
 	P=g*Pt*Gt*Gr
 	SINR=P/(N+interference)
-	Pr.append(10*math.log(SINR))
+	Pr.append(10*math.log10(SINR))
 	dist.append(d)
 
 plt.subplot(2,2,3)
@@ -44,7 +44,7 @@ dist=list()
 for d in range(1,1000):
 	g=((ht*hr)**2)/(d**4)
 	P=(10**(np.random.normal(0,6)/10))*g*Pt*Gt*Gr
-	Pr.append(10*math.log(P))
+	Pr.append(10*math.log10(P))
 	dist.append(d)
 
 plt.subplot(2,2,2)
@@ -57,7 +57,7 @@ for d in range(1,1000):
 	g=((ht*hr)**2)/(d**4)
 	P=(10**(np.random.normal(0,6)/10))*g*Pt*Gt*Gr
 	SINR=P/(N+interference)
-	Pr.append(10*math.log(SINR))
+	Pr.append(10*math.log10(SINR))
 	dist.append(d)
 
 plt.subplot(2,2,4)
