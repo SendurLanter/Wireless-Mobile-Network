@@ -1,6 +1,6 @@
 import tkinter
 from threading import Thread
-from time import sleep
+from time import sleep, time
 import numpy as np
 import math
 
@@ -33,8 +33,8 @@ class model():
 
 		#生成device
 		for i in range(devicenumber):
-			x=np.random.normal(0,50)
-			y=np.random.normal(0,50)
+			x=np.random.normal(0,70)
+			y=np.random.normal(0,70)
 			device = user(x,y,i)
 			userlist.append(device)
 			dot = cell.create_oval(x+400, y+400, x+405, y+405, width = 3)
@@ -158,10 +158,10 @@ class model():
 				dice=np.random.poisson(2)
 
 				#決定走路
-				if dice > 4:
+				if dice > 3:
 					userlist[i].walking=True
-					direction=np.random.uniform(0,6.28)
-					userlist[i].destination=[4*math.cos(direction),4*math.sin(direction),15]
+					#direction=np.random.uniform(0,6.28)
+					userlist[i].destination=[4*np.random.uniform(-0.5,0.5),4*np.random.uniform(-0.5,0.5),70]
 			else:
 				#print(userlist[j].x)
 				userlist[i].walk()		
@@ -186,13 +186,17 @@ class user:
 		while a<0 or a>100:
 			a = np.random.normal(50,10)
 		requested = int(a)
-		self.remaining=20*1024*1024*8
+		self.remaining=10*1024*1024*8
 
 		return requested
 
 	def walk(self):
 		self.x+=self.destination[0]
+		#if self.x>600: self.x-=abs(self.destination[0])
+		#if self.x<200: self.x+=abs(self.destination[0])
 		self.y+=self.destination[1]
+		#if self.y>600: self.y-=abs(self.destination[1])
+		#if self.y<200: self.y+=abs(self.destination[1])
 		self.destination[2]-=1
 		cell.move(dots[self.id], self.destination[0], self.destination[1])
 		if self.destination[2] == 0:
@@ -206,12 +210,13 @@ class request:
 
 
 def simulate():
-
+	sleep(7)
 	Model = model()
 
 	for i in range(300):
 		#sleep(0.01)
-		time=cell.create_text(50,50,text=str(i),font=('Arial', 32))
+		start=time()
+		#s_time=cell.create_text(100,150,text='time: '+str(i) +'s',font=('Arial', 20))
 		for e in circles:
 			cell.delete(e)
 		circles.clear()
@@ -225,12 +230,13 @@ def simulate():
 		Model.update_download()
 		requests=Model.polling()
 		Model.parse_request(requests)
-		cell.delete(time)
+		#cell.delete(s_time)
+		while time()-start<0.05:
+			pass
 
 if __name__ == '__main__':
-    
-    root = tkinter.Tk()
-    cell = tkinter.Canvas(root,width=800, height=800)
-    cell.pack()
-    Thread(target = simulate).start()
-    root.mainloop()
+	root = tkinter.Tk()
+	cell = tkinter.Canvas(root,width=800, height=800)
+	cell.pack()
+	Thread(target = simulate).start()
+	root.mainloop()
